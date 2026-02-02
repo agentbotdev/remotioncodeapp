@@ -1,8 +1,32 @@
 import React from 'react';
-import {AbsoluteFill, useCurrentFrame, interpolate, random} from 'remotion';
+import { AbsoluteFill, useCurrentFrame, interpolate, random } from 'remotion';
+
+// Rain particle component
+const RainDrop = ({ id, frame }) => {
+  const speed = 15 + random(`rain-speed-${id}`) * 10;
+  const delay = random(`rain-delay-${id}`) * 100;
+  const x = random(`rain-x-${id}`) * 1080;
+  const y = ((frame * speed + delay) % 2200) - 200;
+
+  const length = 20 + random(`rain-len-${id}`) * 20;
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: x,
+        top: y,
+        width: 1,
+        height: length,
+        backgroundColor: 'rgba(255, 255, 255, 0.4)',
+        boxShadow: '0 0 4px rgba(255, 255, 255, 0.2)',
+      }}
+    />
+  );
+};
 
 // Smoke particle component
-const SmokeParticle = ({id, frame, originX, originY}) => {
+const SmokeParticle = ({ id, frame, originX, originY, color = '#aaaaaa' }) => {
   // Each particle has its own lifecycle based on id
   const cycleLength = 40;
   const offset = Math.floor(random(`smoke-offset-${id}`) * cycleLength);
@@ -22,7 +46,7 @@ const SmokeParticle = ({id, frame, originX, originY}) => {
     localFrame,
     [0, 40],
     [0, (random(`smoke-drift-${id}`) - 0.4) * 60],
-    {extrapolateRight: 'clamp', extrapolateLeft: 'clamp'}
+    { extrapolateRight: 'clamp', extrapolateLeft: 'clamp' }
   );
 
   const size = 6 + random(`smoke-size-${id}`) * 14;
@@ -40,7 +64,7 @@ const SmokeParticle = ({id, frame, originX, originY}) => {
         width: size,
         height: size,
         borderRadius: '50%',
-        backgroundColor: '#aaaaaa',
+        backgroundColor: color,
         opacity,
         transform: `scale(${scale})`,
         filter: 'blur(4px)',
@@ -50,7 +74,7 @@ const SmokeParticle = ({id, frame, originX, originY}) => {
 };
 
 // Film grain overlay
-const FilmGrain = ({frame}) => {
+const FilmGrain = ({ frame }) => {
   const grainOpacity = 0.06 + random(`grain-${frame % 4}`) * 0.04;
   return (
     <AbsoluteFill
@@ -65,7 +89,13 @@ const FilmGrain = ({frame}) => {
   );
 };
 
-export const WalkingMan = () => {
+export const WalkingMan = ({
+  manColor = '#111111',
+  smokeColor = '#aaaaaa',
+  showRain = true,
+  gridColor = '#1a1a1a',
+  accentColor = '#00ff88'
+}) => {
   const frame = useCurrentFrame();
 
   // Slow camera drift forward
@@ -123,7 +153,7 @@ export const WalkingMan = () => {
   });
 
   return (
-    <AbsoluteFill style={{backgroundColor: '#050505', opacity: masterOpacity}}>
+    <AbsoluteFill style={{ backgroundColor: '#050505', opacity: masterOpacity }}>
       {/* Subtle vignette */}
       <AbsoluteFill
         style={{
@@ -152,7 +182,7 @@ export const WalkingMan = () => {
             height: 0,
             borderLeft: `${pathWidth * 0.7}px solid transparent`,
             borderRight: `${pathWidth * 0.7}px solid transparent`,
-            borderBottom: `900px solid #1a1a1a`,
+            borderBottom: `900px solid ${gridColor}`,
           }}
         />
 
@@ -166,7 +196,7 @@ export const WalkingMan = () => {
             width: 2,
             height: 600,
             background:
-              'linear-gradient(to top, #333333 0%, transparent 100%)',
+              `linear-gradient(to top, ${accentColor}33 0%, transparent 100%)`,
             opacity: 0.3,
           }}
         />
@@ -182,7 +212,7 @@ export const WalkingMan = () => {
               width: 1,
               height: 900,
               background:
-                'linear-gradient(to top, #2a2a2a 0%, transparent 70%)',
+                `linear-gradient(to top, ${accentColor}44 0%, transparent 70%)`,
               opacity: 0.4,
               transform: `translateX(-50%) rotate(${side * 18}deg)`,
               transformOrigin: 'bottom center',
@@ -191,7 +221,7 @@ export const WalkingMan = () => {
         ))}
 
         {/* Ground texture marks */}
-        {Array.from({length: 8}).map((_, i) => {
+        {Array.from({ length: 8 }).map((_, i) => {
           const baseY = 1920 - 200 - i * 100;
           const perspectiveScale = interpolate(i, [0, 7], [1, 0.3], {
             extrapolateRight: 'clamp',
@@ -207,7 +237,7 @@ export const WalkingMan = () => {
                 transform: `translateX(-50%) scaleX(${perspectiveScale})`,
                 width: pathWidth * 0.5,
                 height: 1,
-                backgroundColor: '#222222',
+                backgroundColor: gridColor,
                 opacity: 0.3 * perspectiveScale,
               }}
             />
@@ -243,7 +273,8 @@ export const WalkingMan = () => {
                 width: 40,
                 height: 45,
                 borderRadius: '50% 50% 45% 45%',
-                backgroundColor: '#111111',
+                backgroundColor: manColor,
+                filter: 'brightness(0.8)',
               }}
             />
 
@@ -256,7 +287,7 @@ export const WalkingMan = () => {
                 transform: 'translateX(-50%)',
                 width: 16,
                 height: 12,
-                backgroundColor: '#111111',
+                backgroundColor: manColor,
               }}
             />
 
@@ -269,8 +300,9 @@ export const WalkingMan = () => {
                 transform: 'translateX(-50%)',
                 width: 75,
                 height: 110,
-                backgroundColor: '#0e0e0e',
+                backgroundColor: manColor,
                 borderRadius: '8px 8px 2px 2px',
+                filter: 'brightness(0.9)',
               }}
             />
 
@@ -283,7 +315,7 @@ export const WalkingMan = () => {
                 transform: 'translateX(-50%)',
                 width: 80,
                 height: 105,
-                border: '1px solid #1a1a1a',
+                border: `1px solid ${accentColor}22`,
                 borderRadius: '8px 8px 2px 2px',
                 opacity: 0.5,
               }}
@@ -298,7 +330,8 @@ export const WalkingMan = () => {
                 transform: 'translateX(-50%)',
                 width: 50,
                 height: 14,
-                backgroundColor: '#131313',
+                backgroundColor: manColor,
+                filter: 'brightness(1.1)',
                 borderRadius: '3px',
               }}
             />
@@ -311,7 +344,7 @@ export const WalkingMan = () => {
                 left: 8,
                 width: 22,
                 height: 95,
-                backgroundColor: '#0e0e0e',
+                backgroundColor: manColor,
                 borderRadius: '6px',
                 transform: `rotate(${-armSwing - 3}deg)`,
                 transformOrigin: 'top center',
@@ -326,7 +359,7 @@ export const WalkingMan = () => {
                 right: 8,
                 width: 22,
                 height: 85,
-                backgroundColor: '#0e0e0e',
+                backgroundColor: manColor,
                 borderRadius: '6px',
                 transform: `rotate(${armSwing + 3}deg)`,
                 transformOrigin: 'top center',
@@ -342,7 +375,7 @@ export const WalkingMan = () => {
                   width: 14,
                   height: 14,
                   borderRadius: '50%',
-                  backgroundColor: '#111111',
+                  backgroundColor: manColor,
                 }}
               />
               {/* Cigarette */}
@@ -384,7 +417,8 @@ export const WalkingMan = () => {
                 transform: 'translateX(-50%)',
                 width: 70,
                 height: 30,
-                backgroundColor: '#0c0c0c',
+                backgroundColor: manColor,
+                filter: 'brightness(0.85)',
               }}
             />
 
@@ -396,7 +430,8 @@ export const WalkingMan = () => {
                 left: 22,
                 width: 28,
                 height: 110,
-                backgroundColor: '#0c0c0c',
+                backgroundColor: manColor,
+                filter: 'brightness(0.9)',
                 borderRadius: '4px',
                 transform: `rotate(${leftLegAngle}deg)`,
                 transformOrigin: 'top center',
@@ -425,7 +460,8 @@ export const WalkingMan = () => {
                 right: 22,
                 width: 28,
                 height: 110,
-                backgroundColor: '#0c0c0c',
+                backgroundColor: manColor,
+                filter: 'brightness(0.9)',
                 borderRadius: '4px',
                 transform: `rotate(${rightLegAngle}deg)`,
                 transformOrigin: 'top center',
@@ -448,18 +484,24 @@ export const WalkingMan = () => {
           </div>
 
           {/* Smoke particles - origin near right hand/cigarette */}
-          <div style={{position: 'absolute', top: 180, right: 5}}>
-            {Array.from({length: 12}).map((_, i) => (
+          <div style={{ position: 'absolute', top: 180, right: 5 }}>
+            {Array.from({ length: 12 }).map((_, i) => (
               <SmokeParticle
                 key={i}
                 id={i}
                 frame={frame}
                 originX={random(`sp-x-${i}`) * 10 - 5}
                 originY={0}
+                color={smokeColor}
               />
             ))}
           </div>
         </div>
+
+        {/* Rain particles */}
+        {showRain && Array.from({ length: 150 }).map((_, i) => (
+          <RainDrop key={i} id={i} frame={frame} />
+        ))}
 
         {/* Atmospheric fog at the bottom */}
         <div

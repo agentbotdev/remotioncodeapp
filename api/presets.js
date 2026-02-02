@@ -253,16 +253,28 @@ export const presets = {
     },
 
     // ============================================
-    // PARALLAX LAYERS PRESET
+    // CINEMATIC PRESETS
     // ============================================
 
-    parallax_depth: {
-        composition: 'ParallaxLayers',
+    noir_smoking: {
+        composition: 'WalkingMan',
         props: {
-            title: 'DEPTH',
-            subtitle: 'Layers of meaning',
-            accentColor: '#ff6b6b',
-            backgroundShapes: true,
+            manColor: '#111111',
+            smokeColor: '#999999',
+            showRain: true,
+            gridColor: '#0a0a0a',
+            accentColor: '#333333',
+        },
+    },
+
+    white_walker: {
+        composition: 'WalkingMan',
+        props: {
+            manColor: '#ffffff',
+            smokeColor: '#ffffff',
+            showRain: false,
+            gridColor: '#1a1a1a',
+            accentColor: '#00ff88',
         },
     },
 };

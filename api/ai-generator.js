@@ -21,42 +21,40 @@ export async function analyzePromptWithAI(userPrompt) {
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-        const systemPrompt = `You are an expert motion graphics designer for a social media agency. 
-Analyze the user's video request and return a JSON configuration for a Remotion video.
+        const systemPrompt = `You are a high-end motion graphics director. 
+Analyze the user's video request and return a JSON configuration.
 
 COMPOSITIONS & PROPS:
-1. KineticTitle: Bold, fast-paced animated text. Use for high-energy, motivational messages.
-   Props: text (string), accentColor (hex), fontSize (number, 80-120), lineThickness (number, 2-6)
-2. GradientText: Smooth reveal with elegant gradients. Use for premium, modern, or sleek vibes.
-   Props: text (string), gradientColors (array of 2-3 hex colors), glowIntensity (number, 0-2)
-3. NeonText: Glowing neon tube effect. Use for tech, crypto, nightlife, or futuristic vibes.
-   Props: text (string), color (hex), subtitle (string), flickerEnabled (boolean)
-4. GlassCard: Clean glassmorphism layout. Use for info, stats, or professional branding.
+1. WalkingMan: A cinematic silhouette of a man walking and smoking. Use for: cinematic, deep, atmospheric, rain, smoking, noir, or character-based prompts.
+   Props: manColor (hex), smokeColor (hex), showRain (boolean), gridColor (hex), accentColor (hex)
+2. KineticTitle: Bold animated text. Use for high-energy motivational quotes.
+   Props: text (string), accentColor (hex)
+3. NeonText: Glowing neon. Use for tech, futuristic, or nightlife vibes.
+   Props: text (string), color (hex), subtitle (string)
+4. GradientText: Smooth reveal. Use for premium, modern vibes.
+   Props: text (string), gradientColors (array)
+5. GlassCard: Information card. Use for stats/professional info.
    Props: title (string), subtitle (string), accentColor (hex)
-5. DataViz: Animated growth charts. Use for "leveling up", stats, or financial progress.
-   Props: title (string), subtitle (string), color (hex), showGrid (boolean)
-6. ParticleNetwork: Tech background with connected dots. Use for networking, AI, or futuristic themes.
-   Props: title (string), subtitle (string), color (hex), particleCount (number, 50-150)
-7. IsometricCard: 3D rotating card. Use for product showcases or premium highlights.
-   Props: title (string), subtitle (string), accentColor (hex)
-8. BentoGrid: Multiple small panels. Use for features lists or mixed content.
-   Props: title (string)
-9. ParallaxLayers: Deep layered animation. Use for abstract backgrounds or depth.
-   Props: title (string), subtitle (string), accentColor (hex)
+6. DataViz: Growth charts. Use for showing progress/numbers.
+   Props: title (string), color (hex)
+7. ParticleNetwork: Tech dots. Use for networking/AI themes.
+   Props: title (string), color (hex)
 
 RULES:
+- If the user describes a SCENE (e.g., "man in the rain", "smoking under a bridge", "cinematic man"), ALWAYS prefer 'WalkingMan'.
+- For WalkingMan, map the described "man color" to manColor. If they say "man in white", set manColor to #ffffff.
 - Return ONLY valid JSON.
-- Be creative with colors based on the "vibe" of the prompt (e.g., "success" -> gold/green, "crypto" -> neon green/blue).
-- Choose the composition that BEST fits the user's intent.
 
 JSON STRUCTURE:
 {
   "composition": "string",
-  "text": "string (main text)",
+  "text": "string (main text if applicable)",
   "subtitle": "string (optional)",
-  "primaryColor": "string (main hex color to use)",
-  "secondaryColor": "string (secondary hex color)",
-  "style": "string (smooth|energetic|glitch|minimal)",
+  "primaryColor": "string (hex)",
+  "secondaryColor": "string (hex)",
+  "manColor": "string (hex, if applicable)",
+  "showRain": boolean,
+  "style": "string (smooth|energetic|cinematic)",
   "duration": 10,
   "fps": 30
 }`;
@@ -74,7 +72,7 @@ JSON STRUCTURE:
         }
 
         const config = JSON.parse(jsonMatch[0]);
-        console.log('✨ Gemini AI Result:', config.composition, '-', config.text);
+        console.log('✨ Gemini AI Result:', config.composition, '-', config.text || config.manColor);
 
         return {
             ...config,
@@ -82,99 +80,40 @@ JSON STRUCTURE:
         };
     } catch (error) {
         console.error('❌ Gemini Error:', error.message);
-        console.log('🔄 Swapping to Keyword Fallback...');
         return fallbackAnalysis(userPrompt);
     }
 }
 
 /**
  * Fallback analysis when AI fails
- * Smarter keyword matching
  */
 function fallbackAnalysis(prompt) {
     const lowerPrompt = prompt.toLowerCase();
 
     let composition = 'KineticTitle';
     let primaryColor = '#00ff88';
-    let style = 'energetic';
+    let manColor = '#111111';
+    let showRain = false;
 
-    // 1. Detect composition based on keywords
-    if (lowerPrompt.includes('data') || lowerPrompt.includes('chart') || lowerPrompt.includes('stats') || lowerPrompt.includes('crecimiento')) {
+    // Detect high-priority artistic keywords
+    if (lowerPrompt.includes('hombre') || lowerPrompt.includes('fumando') || lowerPrompt.includes('man') || lowerPrompt.includes('smoking') || lowerPrompt.includes('lluvia') || lowerPrompt.includes('rain')) {
+        composition = 'WalkingMan';
+        if (lowerPrompt.includes('lluvia') || lowerPrompt.includes('rain')) showRain = true;
+        if (lowerPrompt.includes('white') || lowerPrompt.includes('blanco')) manColor = '#ffffff';
+    } else if (lowerPrompt.includes('data') || lowerPrompt.includes('stats')) {
         composition = 'DataViz';
-    } else if (lowerPrompt.includes('neon') || lowerPrompt.includes('glow') || lowerPrompt.includes('brillo')) {
+    } else if (lowerPrompt.includes('neon')) {
         composition = 'NeonText';
-        primaryColor = '#00d4ff';
-    } else if (lowerPrompt.includes('glass') || lowerPrompt.includes('cristal') || lowerPrompt.includes('blur')) {
-        composition = 'GlassCard';
-    } else if (lowerPrompt.includes('particle') || lowerPrompt.includes('particula') || lowerPrompt.includes('tech') || lowerPrompt.includes('futur')) {
-        composition = 'ParticleNetwork';
-        style = 'futuristic';
-    } else if (lowerPrompt.includes('gradient') || lowerPrompt.includes('degradado')) {
+    } else if (lowerPrompt.includes('gradient')) {
         composition = 'GradientText';
     }
 
-    // 2. Detect colors
-    const colorMap = {
-        'blue': '#3b82f6', 'azul': '#3b82f6',
-        'red': '#ef4444', 'rojo': '#ef4444',
-        'green': '#22c55e', 'verde': '#22c55e',
-        'purple': '#a855f7', 'morado': '#a855f7', 'violet': '#a855f7',
-        'orange': '#f97316', 'naranja': '#f97316',
-        'yellow': '#eab308', 'amarillo': '#eab308', 'oro': '#ffd700', 'gold': '#ffd700',
-        'pink': '#ec4899', 'rosa': '#ec4899',
-        'cyan': '#06b6d4', 'celeste': '#06b6d4',
-        'white': '#ffffff', 'blanco': '#ffffff',
-    };
-
-    for (const [keyword, color] of Object.entries(colorMap)) {
-        if (lowerPrompt.includes(keyword)) {
-            primaryColor = color;
-            break;
-        }
-    }
-
-    // 3. SMARTER Text Extraction
-    let text = '';
-
-    // Try quoted text first
-    const quotedMatch = prompt.match(/"([^"]+)"|'([^']+)'/);
-    if (quotedMatch) {
-        text = (quotedMatch[1] || quotedMatch[2]);
-    } else {
-        // Try to find the "message" - usually after words like "diga", "que sea", "texto"
-        const messageKeywords = ['que diga', 'texto', 'frase', 'dice', 'says', 'text'];
-        for (const kw of messageKeywords) {
-            const index = lowerPrompt.indexOf(kw);
-            if (index !== -1) {
-                text = prompt.substring(index + kw.length).trim().split(/[.,]/)[0];
-                break;
-            }
-        }
-
-        // If still empty, look for ALL CAPS words longer than 2 chars
-        if (!text) {
-            const capsWords = prompt.match(/\b[A-Z]{2,}\b/g);
-            if (capsWords && capsWords.length > 0) {
-                text = capsWords.join(' ');
-            }
-        }
-    }
-
-    // Default if extraction failed
-    if (!text || text.length < 2) {
-        text = 'WORK HARD';
-    }
-
-    console.log('📝 Fallback Result:', composition, '-', text);
-
     return {
         composition,
-        text: text.toUpperCase().substring(0, 50),
-        subtitle: '',
+        text: 'WORK HARD',
         primaryColor,
-        secondaryColor: '#667eea',
-        backgroundColor: '#000000',
-        style,
+        manColor,
+        showRain,
         duration: 10,
         fps: 30,
         isAiGenerated: false
@@ -182,71 +121,43 @@ function fallbackAnalysis(prompt) {
 }
 
 /**
- * Convert AI config to EXACT Remotion input props for each composition
+ * Convert AI config to EXACT Remotion input props
  */
 export function configToRemotionProps(config) {
-    const { composition, text, subtitle, primaryColor, secondaryColor, style } = config;
-
-    const baseProps = {
-        text: text || 'AMAZING',
-        subtitle: subtitle || '',
-    };
+    const { composition, text, subtitle, primaryColor, secondaryColor, manColor, showRain } = config;
 
     switch (composition) {
+        case 'WalkingMan':
+            return {
+                manColor: manColor || '#111111',
+                smokeColor: '#aaaaaa',
+                showRain: showRain !== undefined ? showRain : true,
+                accentColor: primaryColor || '#00ff88',
+                gridColor: '#111111'
+            };
         case 'KineticTitle':
             return {
-                text: baseProps.text,
-                accentColor: primaryColor,
-                fontSize: 100,
-                lineThickness: 4
-            };
-        case 'GradientText':
-            return {
-                text: baseProps.text,
-                gradientColors: [primaryColor, secondaryColor || '#764ba2'],
-                glowIntensity: 1,
-                revealStyle: 'clip'
+                text: text || 'AMAZING',
+                accentColor: primaryColor || '#00ff88',
+                fontSize: 100
             };
         case 'NeonText':
             return {
-                text: baseProps.text,
-                color: primaryColor,
-                subtitle: baseProps.subtitle,
-                flickerEnabled: true
+                text: text || 'NEON',
+                color: primaryColor || '#00ff88',
+                subtitle: subtitle || ''
             };
-        case 'GlassCard':
-        case 'IsometricCard':
-        case 'ParallaxLayers':
+        case 'GradientText':
             return {
-                title: baseProps.text,
-                subtitle: baseProps.subtitle,
-                accentColor: primaryColor
+                text: text || 'LIMITLESS',
+                gradientColors: [primaryColor || '#667eea', secondaryColor || '#764ba2']
             };
         case 'DataViz':
             return {
-                title: baseProps.text,
-                subtitle: baseProps.subtitle,
-                color: primaryColor,
-                showGrid: true,
-                data: [
-                    { x: 0, y: 10 }, { x: 1, y: 30 }, { x: 2, y: 25 }, { x: 3, y: 60 }, { x: 4, y: 90 }
-                ]
-            };
-        case 'ParticleNetwork':
-            return {
-                title: baseProps.text,
-                subtitle: baseProps.subtitle,
-                color: primaryColor,
-                particleCount: 100
-            };
-        case 'BentoGrid':
-            return {
-                title: baseProps.text
+                title: text || 'GROWTH',
+                color: primaryColor || '#00ff88'
             };
         default:
-            return {
-                text: baseProps.text,
-                accentColor: primaryColor
-            };
+            return { text: text || 'FOCUS' };
     }
 }
