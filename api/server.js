@@ -168,10 +168,11 @@ app.post('/generate', async (req, res) => {
                 status: 'queued',
                 progress: 0,
                 composition: aiConfig.composition,
-                inputProps: aiConfig, // AI config contains all props
+                inputProps: configToRemotionProps(aiConfig), // Use the new mapper!
                 outputFilename: outputName ? `${outputName}.mp4` : `ai-video-${Date.now()}.mp4`,
                 createdAt: new Date().toISOString(),
                 aiGenerated: true,
+                generationMethod: aiConfig.isAiGenerated ? 'Gemini AI' : 'Keyword Fallback',
                 originalPrompt: aiPrompt,
             };
 
