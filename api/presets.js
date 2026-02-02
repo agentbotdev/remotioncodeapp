@@ -301,6 +301,15 @@ export const presets = {
             n8nColor: '#00ff88',
         },
     },
+
+    // ============================================
+    // N8N + CHATWOOT EPIC (30s cinematic)
+    // ============================================
+
+    n8n_epic: {
+        composition: 'N8nChatwootEpic',
+        props: {},
+    },
 };
 
 // Export preset names for easy discovery

@@ -13,6 +13,7 @@ import {GlassmorphismCard} from './compositions/GlassmorphismCard.jsx';
 import {NeonGlowText} from './compositions/NeonGlowText.jsx';
 import {BentoGrid} from './compositions/BentoGrid.jsx';
 import {N8nChatwootDemo} from './compositions/N8nChatwootDemo.jsx';
+import {N8nChatwootEpic} from './compositions/N8nChatwootEpic.jsx';
 
 const defaultScript = [
   {
@@ -236,6 +237,15 @@ export const RemotionRoot = () => {
           aiColor: '#8b5cf6',
           n8nColor: '#ff6d5a',
         }}
+      />
+      <Composition
+        id="N8nChatwootEpic"
+        component={N8nChatwootEpic}
+        durationInFrames={900}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={{}}
       />
     </>
   );
