@@ -12,6 +12,7 @@ import {DataVisualization} from './compositions/DataVisualization.jsx';
 import {GlassmorphismCard} from './compositions/GlassmorphismCard.jsx';
 import {NeonGlowText} from './compositions/NeonGlowText.jsx';
 import {BentoGrid} from './compositions/BentoGrid.jsx';
+import {N8nChatwootDemo} from './compositions/N8nChatwootDemo.jsx';
 
 const defaultScript = [
   {
@@ -220,6 +221,20 @@ export const RemotionRoot = () => {
         height={1920}
         defaultProps={{
           title: 'FEATURES',
+        }}
+      />
+      <Composition
+        id="N8nChatwootDemo"
+        component={N8nChatwootDemo}
+        durationInFrames={300}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          accentColor: '#ff6d5a',
+          chatwootColor: '#1F93FF',
+          aiColor: '#8b5cf6',
+          n8nColor: '#ff6d5a',
         }}
       />
     </>
