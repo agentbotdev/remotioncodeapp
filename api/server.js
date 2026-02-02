@@ -26,6 +26,41 @@ let currentRender = null;
 let bundleCache = null;
 
 // ============================================
+// ROOT DOCUMENTATION
+// ============================================
+app.get('/', (req, res) => {
+    res.send(`
+        <div style="font-family: sans-serif; padding: 40px; line-height: 1.6; max-width: 800px; margin: 0 auto; background: #0a0a0a; color: #fff; min-height: 100vh;">
+            <h1 style="color: #00ff88; border-left: 5px solid #00ff88; padding-left: 20px;">🎬 Motion Graphics API</h1>
+            <p>El servidor de renderizado está <b>Online</b> y listo para procesar videos.</p>
+            
+            <div style="background: #1a1a1a; padding: 20px; border-radius: 8px; border: 1px solid #333;">
+                <h3 style="margin-top: 0;">📡 Endpoints de la API:</h3>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 15px;">
+                        <b style="color: #6c5ce7;">GET /health</b><br/>
+                        <span style="color: #888;">Verificar estado del servidor y cola de renderizado.</span>
+                    </li>
+                    <li style="margin-bottom: 15px;">
+                        <b style="color: #6c5ce7;">GET /presets</b><br/>
+                        <span style="color: #888;">Listar todos los diseños y composiciones disponibles.</span>
+                    </li>
+                    <li style="margin-bottom: 15px;">
+                        <b style="color: #6c5ce7;">POST /generate</b><br/>
+                        <span style="color: #888;">Crear un nuevo video pasándole un preset o composición.</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <p style="margin-top: 40px; color: #666; font-size: 0.9em;">
+                Para usar la interfaz visual, visita: 
+                <a href="https://videolab.limitlessmediagrowth.com" style="color: #00ff88; text-decoration: none;">videolab.limitlessmediagrowth.com</a>
+            </p>
+        </div>
+    `);
+});
+
+// ============================================
 // HEALTH CHECK
 // ============================================
 app.get('/health', (req, res) => {
