@@ -147,13 +147,64 @@ app.get('/download/:filename', (req, res) => {
 // GENERATE VIDEO
 // ============================================
 app.post('/generate', async (req, res) => {
-    const { preset, composition, outputName, props } = req.body;
+    const { preset, composition, outputName, props, aiPrompt } = req.body;
 
-    // Validation
+    // AI Prompt Mode
+    if (aiPrompt) {
+        try {
+            console.log('🤖 AI Prompt received:', aiPrompt);
+
+            // Import AI generator
+            const { analyzePromptWithAI, configToRemotionProps } = await import('./ai-generator.js');
+
+            // Analyze prompt with AI
+            const aiConfig = await analyzePromptWithAI(aiPrompt);
+            console.log('✨ AI Generated Config:', aiConfig);
+
+            // Create job with AI config
+            const jobId = `ai-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            const job = {
+                id: jobId,
+                status: 'queued',
+                progress: 0,
+                composition: aiConfig.composition,
+                props: configToRemotionProps(aiConfig),
+                inputProps: aiConfig,
+                outputName: outputName || `ai-video-${Date.now()}.mp4`,
+                createdAt: new Date(),
+                aiGenerated: true,
+                originalPrompt: aiPrompt,
+            };
+
+            renderQueue.push(job);
+
+            res.json({
+                success: true,
+                jobId: job.id,
+                message: 'AI video generation started',
+                aiConfig,
+                queuePosition: renderQueue.length,
+            });
+
+            if (!isProcessing) {
+                processQueue();
+            }
+
+            return;
+        } catch (error) {
+            console.error('AI Generation Error:', error);
+            return res.status(500).json({
+                error: 'AI generation failed',
+                message: error.message,
+            });
+        }
+    }
+
+    // Validation for non-AI mode
     if (!preset && !composition) {
         return res.status(400).json({
             error: 'Missing required parameter',
-            message: 'You must provide either "preset" or "composition"',
+            message: 'You must provide either "preset", "composition", or "aiPrompt"',
         });
     }
 
