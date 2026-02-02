@@ -277,6 +277,30 @@ export const presets = {
             accentColor: '#00ff88',
         },
     },
+
+    // ============================================
+    // N8N + CHATWOOT + AI DEMO PRESETS
+    // ============================================
+
+    n8n_chatwoot_ai: {
+        composition: 'N8nChatwootDemo',
+        props: {
+            accentColor: '#ff6d5a',
+            chatwootColor: '#1F93FF',
+            aiColor: '#8b5cf6',
+            n8nColor: '#ff6d5a',
+        },
+    },
+
+    n8n_chatwoot_green: {
+        composition: 'N8nChatwootDemo',
+        props: {
+            accentColor: '#00ff88',
+            chatwootColor: '#1F93FF',
+            aiColor: '#00d4ff',
+            n8nColor: '#00ff88',
+        },
+    },
 };
 
 // Export preset names for easy discovery
@@ -302,6 +326,7 @@ export function listPresets() {
         'IsometricCard': [],
         'BentoGrid': [],
         'ParallaxLayers': [],
+        'N8nChatwootDemo': [],
     };
 
     Object.entries(presets).forEach(([name, config]) => {
