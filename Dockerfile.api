@@ -4,6 +4,7 @@ FROM node:18-slim
 # Install Chrome and dependencies for video rendering
 RUN apt-get update && apt-get install -y \
     chromium \
+    curl \
     fonts-liberation \
     fonts-noto-color-emoji \
     libappindicator3-1 \
