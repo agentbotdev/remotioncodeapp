@@ -168,10 +168,9 @@ app.post('/generate', async (req, res) => {
                 status: 'queued',
                 progress: 0,
                 composition: aiConfig.composition,
-                props: configToRemotionProps(aiConfig),
-                inputProps: aiConfig,
-                outputName: outputName || `ai-video-${Date.now()}.mp4`,
-                createdAt: new Date(),
+                inputProps: aiConfig, // AI config contains all props
+                outputFilename: outputName ? `${outputName}.mp4` : `ai-video-${Date.now()}.mp4`,
+                createdAt: new Date().toISOString(),
                 aiGenerated: true,
                 originalPrompt: aiPrompt,
             };
