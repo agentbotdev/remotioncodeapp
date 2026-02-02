@@ -15,7 +15,7 @@ RUN npm install
 COPY . ./
 
 # Build the app
-RUN npm run build
+RUN npm run build && mkdir -p public
 
 # Production image
 FROM node:18-alpine AS runner
@@ -27,7 +27,7 @@ ENV NODE_ENV=production
 # Copy built assets
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public 2>/dev/null || true
+COPY --from=builder /app/public ./public
 
 EXPOSE 3000
 
