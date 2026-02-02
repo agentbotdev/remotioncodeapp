@@ -1,0 +1,38 @@
+# Frontend Dockerfile - Next.js Static Build
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy source code (excluding api folder)
+COPY app/ ./app/
+COPY remotion/ ./remotion/
+COPY public/ ./public/ 2>/dev/null || true
+COPY next.config.mjs ./
+COPY tailwind.config.js ./
+COPY postcss.config.js ./
+COPY tsconfig.json ./
+
+# Build the app
+RUN npm run build
+
+# Production image
+FROM node:18-alpine AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Copy built assets
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public 2>/dev/null || true
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
