@@ -169,7 +169,7 @@ const WfNode = ({x, y, icon, label, color, frame, delay, size = 56}) => {
       <div style={{
         textAlign: 'center', marginTop: 6,
         fontSize: 11, fontWeight: 700, color: P.white,
-        fontFamily: fonts.inter, whiteSpace: 'nowrap',
+        fontFamily: fonts.dmSans, whiteSpace: 'nowrap',
         textShadow: `0 0 10px ${color}66`,
       }}>{label}</div>
     </div>
@@ -198,17 +198,17 @@ const LeadCard = ({name, email, company, status, score, frame, delay, x, y}) => 
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 13,
           }}>👤</div>
-          <div style={{fontSize: 13, fontWeight: 700, color: P.white, fontFamily: fonts.inter}}>{name}</div>
+          <div style={{fontSize: 13, fontWeight: 700, color: P.white, fontFamily: fonts.plusJakarta}}>{name}</div>
         </div>
-        <div style={{fontSize: 10, color: P.gray, fontFamily: fonts.inter, marginBottom: 3}}>📧 {email}</div>
-        <div style={{fontSize: 10, color: P.gray, fontFamily: fonts.inter, marginBottom: 8}}>🏢 {company}</div>
+        <div style={{fontSize: 10, color: P.gray, fontFamily: fonts.dmSans, marginBottom: 3}}>📧 {email}</div>
+        <div style={{fontSize: 10, color: P.gray, fontFamily: fonts.dmSans, marginBottom: 8}}>🏢 {company}</div>
         <div style={{height: 1, background: `${P.blue}22`, marginBottom: 8}}/>
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <div style={{display: 'flex', alignItems: 'center', gap: 4}}>
             <div style={{width: 6, height: 6, borderRadius: '50%', backgroundColor: statusColor, boxShadow: `0 0 6px ${statusColor}`}}/>
-            <span style={{fontSize: 10, fontWeight: 600, color: statusColor, fontFamily: fonts.inter}}>{status}</span>
+            <span style={{fontSize: 10, fontWeight: 600, color: statusColor, fontFamily: fonts.outfit}}>{status}</span>
           </div>
-          <span style={{fontSize: 10, color: P.blue, fontWeight: 700, fontFamily: fonts.inter}}>Score: {score}</span>
+          <span style={{fontSize: 10, color: P.blue, fontWeight: 700, fontFamily: fonts.outfit}}>Score: {score}</span>
         </div>
       </GlassCard>
     </div>
@@ -236,7 +236,7 @@ const ChatBubble = ({text, isAgent, agentName, frame, delay}) => {
       marginBottom: 8, width: '100%',
     }}>
       {isAgent && agentName && (
-        <div style={{fontSize: 9, color: P.purple, fontFamily: fonts.inter, fontWeight: 600, marginBottom: 2, marginLeft: 8}}>
+        <div style={{fontSize: 9, color: P.purple, fontFamily: fonts.dmSans, fontWeight: 600, marginBottom: 2, marginLeft: 8}}>
           {agentName}
         </div>
       )}
@@ -245,7 +245,7 @@ const ChatBubble = ({text, isAgent, agentName, frame, delay}) => {
         borderRadius: isAgent ? '3px 14px 14px 14px' : '14px 14px 3px 14px',
         background: isAgent ? 'linear-gradient(135deg, #1a1a36, #222248)' : `linear-gradient(135deg, ${P.blue}, #0099cc)`,
         border: isAgent ? `1px solid ${P.purple}33` : 'none',
-        fontSize: 12, color: P.white, fontFamily: fonts.inter, lineHeight: 1.45,
+        fontSize: 12, color: P.white, fontFamily: fonts.dmSans, lineHeight: 1.45,
       }}>
         {displayText}{showCursor && <span style={{opacity: Math.sin(f * 0.5) > 0 ? 1 : 0, color: P.purple}}>|</span>}
       </div>
@@ -303,11 +303,11 @@ const MetricPanel = ({title, value, x, y, color = P.blue, frame, delay}) => {
       opacity,
     }}>
       <GlassCard color={color} style={{padding: '14px 22px', minWidth: 180}}>
-        <div style={{fontSize: 10, color: P.gray, letterSpacing: '0.15em', fontFamily: fonts.inter, fontWeight: 600, marginBottom: 4}}>
+        <div style={{fontSize: 10, color: P.gray, letterSpacing: '0.15em', fontFamily: fonts.outfit, fontWeight: 600, marginBottom: 4}}>
           {title}
         </div>
-        <div style={{fontSize: 30, fontWeight: 900, color, fontFamily: fonts.inter,
-          textShadow: `0 0 20px ${color}88`}}>
+        <div style={{fontSize: 36, fontWeight: 400, color, fontFamily: fonts.bebasNeue,
+          letterSpacing: '0.05em', textShadow: `0 0 20px ${color}88`}}>
           {value}
         </div>
       </GlassCard>
@@ -335,7 +335,7 @@ const ThinkingStep = ({label, icon, color, frame, delay, y}) => {
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
           <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
             <span style={{fontSize: 18}}>{icon}</span>
-            <span style={{fontSize: 15, fontWeight: 700, color: P.white, fontFamily: fonts.inter}}>{label}</span>
+            <span style={{fontSize: 15, fontWeight: 700, color: P.white, fontFamily: fonts.outfit}}>{label}</span>
           </div>
           <span style={{fontSize: 16, opacity: checkOpacity}}>✓</span>
         </div>
@@ -531,8 +531,8 @@ export const N8nChatwootEpic = () => {
           opacity: crmTitleOpacity,
         }}>
           <h1 style={{
-            fontSize: 100, fontWeight: 900, letterSpacing: '0.35em',
-            fontFamily: fonts.inter, margin: 0, lineHeight: 1,
+            fontSize: 130, fontWeight: 400, letterSpacing: '0.4em',
+            fontFamily: fonts.bebasNeue, margin: 0, lineHeight: 1,
             background: `linear-gradient(180deg, ${P.white} 0%, ${P.blue} 100%)`,
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             textShadow: 'none', filter: `drop-shadow(0 0 30px ${P.blue}44)`,
@@ -549,7 +549,7 @@ export const N8nChatwootEpic = () => {
           position: 'absolute', bottom: 200, width: '100%', textAlign: 'center',
           opacity: interpolate(frame, [110, 130, 155, 175], [0, 1, 1, 0], clamp()),
         }}>
-          <p style={{fontSize: 22, color: P.gray, fontFamily: fonts.inter, fontWeight: 400, margin: 0}}>
+          <p style={{fontSize: 24, color: P.gray, fontFamily: fonts.playfair, fontWeight: 400, fontStyle: 'italic', margin: 0}}>
             El cerebro de tu negocio
           </p>
         </div>
@@ -564,10 +564,10 @@ export const N8nChatwootEpic = () => {
           position: 'absolute', top: 110, width: '100%', textAlign: 'center',
           opacity: interpolate(frame, [190, 210], [0, 1], clamp()),
         }}>
-          <h2 style={{fontSize: 52, fontWeight: 900, color: P.white, fontFamily: fonts.inter, margin: 0, letterSpacing: -1}}>
+          <h2 style={{fontSize: 72, fontWeight: 400, color: P.white, fontFamily: fonts.bebasNeue, margin: 0, letterSpacing: '0.15em'}}>
             WORKFLOW
           </h2>
-          <p style={{fontSize: 18, color: P.orange, fontFamily: fonts.inter, marginTop: 8, fontWeight: 500}}>
+          <p style={{fontSize: 18, color: P.orange, fontFamily: fonts.outfit, marginTop: 8, fontWeight: 500}}>
             n8n orquesta el flujo completo
           </p>
         </div>
@@ -589,7 +589,7 @@ export const N8nChatwootEpic = () => {
               display: 'flex', alignItems: 'center', gap: 8,
             }}>
               <div style={{width: 8, height: 8, borderRadius: '50%', background: P.orange}}/>
-              <span style={{fontSize: 12, color: P.orange, fontWeight: 700, fontFamily: fonts.inter}}>n8n workflow</span>
+              <span style={{fontSize: 12, color: P.orange, fontWeight: 700, fontFamily: fonts.dmSans}}>n8n workflow</span>
             </div>
             {/* Canvas dots */}
             <div style={{position: 'absolute', inset: 0, top: 36, overflow: 'hidden'}}>
@@ -641,7 +641,7 @@ export const N8nChatwootEpic = () => {
               opacity: interpolate(frame, [355 + i * 8, 365 + i * 8], [0, 1], clamp()),
             }}>
               <span style={{fontSize: 14}}>{b.icon}</span>
-              <span style={{fontSize: 13, color: b.color, fontFamily: fonts.inter, fontWeight: 600}}>{b.text}</span>
+              <span style={{fontSize: 13, color: b.color, fontFamily: fonts.outfit, fontWeight: 600}}>{b.text}</span>
             </div>
           ))}
         </div>
@@ -662,10 +662,10 @@ export const N8nChatwootEpic = () => {
           position: 'absolute', top: 120, width: '100%', textAlign: 'center',
           opacity: interpolate(frame, [430, 450], [0, 1], clamp()),
         }}>
-          <h2 style={{fontSize: 48, fontWeight: 900, color: P.white, fontFamily: fonts.inter, margin: 0}}>
+          <h2 style={{fontSize: 68, fontWeight: 400, color: P.white, fontFamily: fonts.bebasNeue, margin: 0, letterSpacing: '0.15em'}}>
             AI AGENT
           </h2>
-          <p style={{fontSize: 16, color: P.blue, fontFamily: fonts.inter, marginTop: 6}}>
+          <p style={{fontSize: 16, color: P.blue, fontFamily: fonts.outfit, marginTop: 6}}>
             Procesamiento inteligente
           </p>
         </div>
@@ -721,7 +721,7 @@ export const N8nChatwootEpic = () => {
           <GlassCard color={P.green} style={{padding: '18px 24px', width: 340}}>
             <div style={{display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10}}>
               <span style={{fontSize: 20}}>✅</span>
-              <span style={{fontSize: 16, fontWeight: 800, color: P.green, fontFamily: fonts.inter}}>Respuesta Generada</span>
+              <span style={{fontSize: 16, fontWeight: 800, color: P.green, fontFamily: fonts.plusJakarta}}>Respuesta Generada</span>
             </div>
             {[
               {label: 'Sentimiento', value: 'Positivo 😊', color: P.green},
@@ -729,8 +729,8 @@ export const N8nChatwootEpic = () => {
               {label: 'Canal', value: 'Chatwoot', color: P.pink},
             ].map((r, i) => (
               <div key={i} style={{display: 'flex', justifyContent: 'space-between', marginBottom: 5}}>
-                <span style={{fontSize: 12, color: P.gray, fontFamily: fonts.inter}}>{r.label}</span>
-                <span style={{fontSize: 12, color: r.color, fontWeight: 700, fontFamily: fonts.inter}}>{r.value}</span>
+                <span style={{fontSize: 12, color: P.gray, fontFamily: fonts.dmSans}}>{r.label}</span>
+                <span style={{fontSize: 12, color: r.color, fontWeight: 700, fontFamily: fonts.outfit}}>{r.value}</span>
               </div>
             ))}
           </GlassCard>
@@ -746,10 +746,10 @@ export const N8nChatwootEpic = () => {
           position: 'absolute', top: 100, width: '100%', textAlign: 'center',
           opacity: interpolate(frame, [610, 630], [0, 1], clamp()),
         }}>
-          <h2 style={{fontSize: 48, fontWeight: 900, color: P.white, fontFamily: fonts.inter, margin: 0}}>
+          <h2 style={{fontSize: 68, fontWeight: 400, color: P.white, fontFamily: fonts.bebasNeue, margin: 0, letterSpacing: '0.15em'}}>
             CHATWOOT
           </h2>
-          <p style={{fontSize: 16, color: P.pink, fontFamily: fonts.inter, marginTop: 6}}>
+          <p style={{fontSize: 16, color: P.pink, fontFamily: fonts.outfit, marginTop: 6}}>
             Mensajería inteligente en tiempo real
           </p>
         </div>
@@ -774,8 +774,8 @@ export const N8nChatwootEpic = () => {
                 fontSize: 18,
               }}>💬</div>
               <div>
-                <div style={{fontSize: 14, fontWeight: 700, color: P.white, fontFamily: fonts.inter}}>Chatwoot</div>
-                <div style={{display: 'flex', alignItems: 'center', gap: 4, fontSize: 10, color: P.green, fontFamily: fonts.inter}}>
+                <div style={{fontSize: 14, fontWeight: 700, color: P.white, fontFamily: fonts.plusJakarta}}>Chatwoot</div>
+                <div style={{display: 'flex', alignItems: 'center', gap: 4, fontSize: 10, color: P.green, fontFamily: fonts.dmSans}}>
                   <div style={{width: 6, height: 6, borderRadius: '50%', background: P.green}}/>
                   AI Agent Online
                 </div>
@@ -789,7 +789,7 @@ export const N8nChatwootEpic = () => {
 
             {/* Conversation list */}
             <div style={{padding: '10px 14px', borderBottom: `1px solid ${P.pink}11`}}>
-              <div style={{fontSize: 10, color: P.gray, fontFamily: fonts.inter, fontWeight: 600, letterSpacing: '0.1em', marginBottom: 8}}>
+              <div style={{fontSize: 10, color: P.gray, fontFamily: fonts.outfit, fontWeight: 600, letterSpacing: '0.1em', marginBottom: 8}}>
                 CONVERSACIONES
               </div>
               {[
@@ -817,17 +817,17 @@ export const N8nChatwootEpic = () => {
                     }}/>}
                   </div>
                   <div style={{flex: 1}}>
-                    <div style={{fontSize: 11, fontWeight: 700, color: P.white, fontFamily: fonts.inter}}>{conv.name}</div>
-                    <div style={{fontSize: 9, color: P.gray, fontFamily: fonts.inter}}>{conv.msg}</div>
+                    <div style={{fontSize: 11, fontWeight: 700, color: P.white, fontFamily: fonts.plusJakarta}}>{conv.name}</div>
+                    <div style={{fontSize: 9, color: P.gray, fontFamily: fonts.dmSans}}>{conv.msg}</div>
                   </div>
-                  <div style={{fontSize: 8, color: P.dimGray, fontFamily: fonts.inter}}>{conv.time}</div>
+                  <div style={{fontSize: 8, color: P.dimGray, fontFamily: fonts.dmSans}}>{conv.time}</div>
                 </div>
               ))}
             </div>
 
             {/* Active chat */}
             <div style={{padding: '12px 14px', minHeight: 420}}>
-              <div style={{fontSize: 9, color: P.dimGray, fontFamily: fonts.inter, textAlign: 'center', marginBottom: 10}}>
+              <div style={{fontSize: 9, color: P.dimGray, fontFamily: fonts.dmSans, textAlign: 'center', marginBottom: 10}}>
                 Hoy
               </div>
               <ChatBubble text="Hola, necesito ayuda con la integración de mi API" isAgent={false} frame={frame} delay={660}/>
@@ -857,7 +857,7 @@ export const N8nChatwootEpic = () => {
               background: `${b.color}11`, border: `1px solid ${b.color}33`,
               borderRadius: 10, padding: '7px 14px',
               display: 'flex', alignItems: 'center', gap: 6,
-              fontSize: 11, color: b.color, fontFamily: fonts.inter, fontWeight: 600,
+              fontSize: 11, color: b.color, fontFamily: fonts.outfit, fontWeight: 600,
             }}>{b.icon} {b.text}</div>
           ))}
         </div>
@@ -877,25 +877,25 @@ export const N8nChatwootEpic = () => {
           {/* CRM node */}
           <div style={{position: 'absolute', left: '50%', top: 0, transform: 'translateX(-50%)'}}>
             <GlassCard color={P.blue} style={{padding: '10px 24px'}}>
-              <span style={{fontSize: 14, fontWeight: 800, color: P.blue, fontFamily: fonts.inter}}>📊 CRM</span>
+              <span style={{fontSize: 14, fontWeight: 800, color: P.blue, fontFamily: fonts.plusJakarta}}>📊 CRM</span>
             </GlassCard>
           </div>
           {/* n8n node */}
           <div style={{position: 'absolute', left: '50%', top: '40%', transform: 'translateX(-50%)'}}>
             <GlassCard color={P.orange} style={{padding: '10px 24px'}}>
-              <span style={{fontSize: 14, fontWeight: 800, color: P.orange, fontFamily: fonts.inter}}>⚡ n8n</span>
+              <span style={{fontSize: 14, fontWeight: 800, color: P.orange, fontFamily: fonts.plusJakarta}}>⚡ n8n</span>
             </GlassCard>
           </div>
           {/* Chatwoot */}
           <div style={{position: 'absolute', left: '20%', bottom: 0, transform: 'translateX(-50%)'}}>
             <GlassCard color={P.pink} style={{padding: '10px 20px'}}>
-              <span style={{fontSize: 13, fontWeight: 800, color: P.pink, fontFamily: fonts.inter}}>💬 Chatwoot</span>
+              <span style={{fontSize: 13, fontWeight: 800, color: P.pink, fontFamily: fonts.plusJakarta}}>💬 Chatwoot</span>
             </GlassCard>
           </div>
           {/* AI */}
           <div style={{position: 'absolute', left: '80%', bottom: 0, transform: 'translateX(-50%)'}}>
             <GlassCard color={P.purple} style={{padding: '10px 20px'}}>
-              <span style={{fontSize: 13, fontWeight: 800, color: P.purple, fontFamily: fonts.inter}}>🧠 AI Agent</span>
+              <span style={{fontSize: 13, fontWeight: 800, color: P.purple, fontFamily: fonts.plusJakarta}}>🧠 AI Agent</span>
             </GlassCard>
           </div>
 
@@ -929,8 +929,8 @@ export const N8nChatwootEpic = () => {
               opacity: tOp,
             }}>
               <h1 style={{
-                fontSize: 64, fontWeight: 900, color: finalColors[i],
-                fontFamily: fonts.inter, margin: 0, letterSpacing: '0.2em',
+                fontSize: 84, fontWeight: 400, color: finalColors[i],
+                fontFamily: fonts.bebasNeue, margin: 0, letterSpacing: '0.25em',
                 textShadow: `0 0 40px ${finalColors[i]}66, 0 0 80px ${finalColors[i]}33`,
               }}>{text}</h1>
             </div>
