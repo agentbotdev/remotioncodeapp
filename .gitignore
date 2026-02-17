@@ -1,7 +1,8 @@
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.js
+package-lock.json
 
 # testing
 /coverage
@@ -35,7 +36,7 @@ yarn-error.log*
 next-env.d.ts
 
 # remotion
-/output
+output/
 *.mp4
 remotion-*
 
